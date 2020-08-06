@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DApp by Ashish Kumar (+919876061725)</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid">
+    STORE MOBILE PHONE NO.<br><br>
+
+  <div class="form-row">
+
+    <div class="form-group col-md-2">
+    <input  type="text" id="setnumber" placeholder="Input No.">
+    </div>
+
+	  <div class="form-group col-md-2">
+    <button id="button" onclick="set()">Set </button><br>
+    </div>
+	
+	
+	<b><div id="view01" ></div></b>
+	<br>
+  </div>
+
+	
+	View Mobile Phone No.<br>
+  <div class="form-row">
+
+    <div class="form-group col-md-2">
+    <button id="button" onclick="view()">View</button><br>
+    </div>
+    <b><div id="view02" ></div></b>    
+    
+   
+	
+  </div>
+
+	 
+</div>		
+	
+
+	<script type="text/javascript" src="./abi.js"></script>
+    <script type="text/javascript">
+
+      var myContract;
+	  
+	  $(document).ready(function(){
+
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+      web3.eth.defaultAccount = web3.eth.accounts[0];
+      const address = '0x9B9E7D89b3f4047DE9f08958E7998997564AADf3';
+      myContract = new web3.eth.Contract(abi, address);
+    });
+		
+		async function set(){
+      var p1 = document.getElementById('setnumber').value;
+      const result = await myContract.methods.store(p1).send({from:"0xCc525f550792D2c8154077B7F4a261dd024638C9",gas:1000000})
+      .then(function (result) {
+      $("#view01").html('Number is Stored');
+      console.log(result);
+      });
+		
+		};
+		
+		async  function view(){
+			//var p2 = document.getElementById('viewnumber').value;
+			const result1 = await myContract.methods.retreive().call()
+			.then (function (result1){		
+				$("#view02").html('Stored Number is :   '+ result1);
+				console.log(result1);
+			});
+		}
+		
+    </script>
+  </body>
+</html>
